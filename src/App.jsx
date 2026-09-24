@@ -19,8 +19,16 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedArticle, setSelectedArticle] = useState(null);
 
-  // Initialize buttery smooth scrolling using Lenis
+  // Initialize smooth scrolling for desktop, preserve native 120Hz touch scrolling for mobile
   useEffect(() => {
+    const isTouch =
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia('(pointer: coarse)').matches;
+
+    // Mobile devices handle native momentum touch scroll natively and flawlessly
+    if (isTouch) return;
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

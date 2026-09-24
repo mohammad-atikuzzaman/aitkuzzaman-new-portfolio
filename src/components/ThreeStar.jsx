@@ -23,6 +23,7 @@ export default function ThreeStar({ className = "w-28 h-28", size = 1, rotationS
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
+    renderer.domElement.style.touchAction = 'pan-y';
     currentMount.appendChild(renderer.domElement);
 
     // 4-pointed 3D Star Geometry
@@ -139,5 +140,5 @@ export default function ThreeStar({ className = "w-28 h-28", size = 1, rotationS
     };
   }, [size, rotationSpeed]);
 
-  return <div ref={mountRef} className={`${className} cursor-grab active:cursor-grabbing pointer-events-auto`} />;
+  return <div ref={mountRef} style={{ touchAction: 'pan-y' }} className={`${className} cursor-grab active:cursor-grabbing pointer-events-auto touch-pan-y`} />;
 }

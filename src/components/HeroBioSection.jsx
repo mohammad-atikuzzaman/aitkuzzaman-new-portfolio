@@ -78,7 +78,7 @@ export default function HeroBioSection() {
       <section
         id="hero-section"
         ref={heroRef}
-        className="relative min-h-[92vh] md:min-h-screen flex flex-col justify-between items-center pt-20 sm:pt-24 pb-6 sm:pb-8 px-4 sm:px-6 max-w-7xl mx-auto select-none overflow-visible"
+        className="relative min-h-[92vh] md:min-h-screen flex flex-col justify-between items-center pt-20 sm:pt-24 pb-6 sm:pb-8 px-4 sm:px-6 max-w-7xl mx-auto overflow-visible touch-pan-y"
       >
         {/* Hero Headings with 3D Chrome Stars anchored directly to text */}
         <div className="w-full flex-1 flex flex-col items-center justify-center my-auto relative z-10 -mt-8 sm:mt-0">
@@ -126,8 +126,8 @@ export default function HeroBioSection() {
         >
           <div
             ref={cardRef}
-            style={{ transformStyle: 'preserve-3d' }}
-            className="w-[210px] sm:w-[290px] md:w-[350px] aspect-[3/4] rounded-[22px] sm:rounded-[32px] shadow-2xl relative pointer-events-auto"
+            style={{ transformStyle: 'preserve-3d', touchAction: 'pan-y' }}
+            className="w-[210px] sm:w-[290px] md:w-[350px] aspect-[3/4] rounded-[22px] sm:rounded-[32px] shadow-2xl relative pointer-events-none sm:pointer-events-auto touch-pan-y"
           >
             {/* FRONT FACE (Hero state: Dark/Shadowy studio portrait of user) */}
             <div
