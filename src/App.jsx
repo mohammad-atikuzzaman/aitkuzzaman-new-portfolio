@@ -1,0 +1,101 @@
+import React, { useState, useEffect } from 'react';
+import Lenis from 'lenis';
+import Navbar from './components/Navbar';
+import HeroBioSection from './components/HeroBioSection';
+import ScrollStatement from './components/ScrollStatement';
+import Services from './components/Services';
+import FeaturedProjects from './components/FeaturedProjects';
+import Testimonials from './components/Testimonials';
+import Thoughts from './components/Thoughts';
+import Contact from './components/Contact';
+import Footer from './components/Footer';
+import WorkPage from './components/WorkPage';
+import BlogPage from './components/BlogPage';
+import ProjectDetailModal from './components/ProjectDetailModal';
+import ArticleDetailModal from './components/ArticleDetailModal';
+
+export default function App() {
+  const [currentPage, setCurrentPage] = useState('home'); // 'home', 'work', 'blog'
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedArticle, setSelectedArticle] = useState(null);
+
+  // Initialize buttery smooth scrolling using Lenis
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1.1,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
+  const handleNavigate = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <div className="min-h-screen bg-[#ECEAE5] text-[#111111] relative selection:bg-neutral-900 selection:text-white">
+      {/* Fixed Floating Navigation */}
+      <Navbar onNavigate={handleNavigate} activePage={currentPage} />
+
+      {/* Main Content Area */}
+      <main>
+        {currentPage === 'home' && (
+          <>
+            <HeroBioSection />
+            <ScrollStatement />
+            <Services />
+            <FeaturedProjects 
+              onSelectProject={setSelectedProject}
+              onNavigate={handleNavigate}
+            />
+            <Testimonials />
+            <Thoughts 
+              onSelectArticle={setSelectedArticle}
+              onNavigate={handleNavigate}
+            />
+            <Contact />
+            <Footer onNavigate={handleNavigate} />
+          </>
+        )}
+
+        {currentPage === 'work' && (
+          <WorkPage
+            onBack={() => handleNavigate('home')}
+            onSelectProject={setSelectedProject}
+          />
+        )}
+
+        {currentPage === 'blog' && (
+          <BlogPage
+            onBack={() => handleNavigate('home')}
+            onSelectArticle={setSelectedArticle}
+          />
+        )}
+      </main>
+
+      {/* Interactive Modals */}
+      <ProjectDetailModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
+
+      <ArticleDetailModal
+        article={selectedArticle}
+        onClose={() => setSelectedArticle(null)}
+      />
+    </div>
+  );
+}
