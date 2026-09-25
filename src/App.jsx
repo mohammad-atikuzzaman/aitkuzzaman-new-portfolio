@@ -13,6 +13,7 @@ import WorkPage from './components/WorkPage';
 import BlogPage from './components/BlogPage';
 import ProjectDetailModal from './components/ProjectDetailModal';
 import ArticleDetailModal from './components/ArticleDetailModal';
+import TechStack from './components/TechStack';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home'); // 'home', 'work', 'blog'
@@ -83,6 +84,7 @@ export default function App() {
               onSelectProject={setSelectedProject}
               onNavigate={handleNavigate}
             />
+            <TechStack />
             <Testimonials />
             <Thoughts 
               onSelectArticle={setSelectedArticle}
