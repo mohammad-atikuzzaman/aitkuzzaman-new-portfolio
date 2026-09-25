@@ -5,6 +5,25 @@ import Contact from './Contact';
 import Footer from './Footer';
 
 export default function WorkPage({ onBack, onSelectProject }) {
+  const [projects, setProjects] = React.useState(projectsData);
+
+  React.useEffect(() => {
+    fetch('/api/projects')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.projects && data.projects.length > 0) {
+          const normalized = data.projects.map((p) => ({
+            ...p,
+            id: p.id || p._id || p.slug,
+          }));
+          setProjects(normalized);
+        }
+      })
+      .catch((err) => {
+        console.warn('Using local fallback projects:', err.message);
+      });
+  }, []);
+
   return (
     <div className="pt-24 min-h-screen flex flex-col justify-between animate-in fade-in duration-300">
       <div className="max-w-7xl mx-auto px-6 w-full">
@@ -29,7 +48,7 @@ export default function WorkPage({ onBack, onSelectProject }) {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 mb-20">
-          {projectsData.map((project) => (
+          {projects.map((project) => (
             <div
               key={project.id}
               onClick={() => onSelectProject(project)}

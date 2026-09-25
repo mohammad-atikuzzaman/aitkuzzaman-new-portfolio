@@ -35,6 +35,25 @@ export const articlesData = [
 ];
 
 export default function Thoughts({ onSelectArticle, onNavigate }) {
+  const [articles, setArticles] = React.useState(articlesData);
+
+  React.useEffect(() => {
+    fetch('/api/thoughts')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.thoughts && data.thoughts.length > 0) {
+          const normalized = data.thoughts.map((t) => ({
+            ...t,
+            id: t.id || t._id || t.slug,
+          }));
+          setArticles(normalized);
+        }
+      })
+      .catch((err) => {
+        console.warn('Using local fallback thoughts:', err.message);
+      });
+  }, []);
+
   return (
     <section className="py-24 px-6 max-w-7xl mx-auto">
       <div className="mb-14">
@@ -44,7 +63,7 @@ export default function Thoughts({ onSelectArticle, onNavigate }) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {articlesData.map((article) => (
+        {articles.map((article) => (
           <div
             key={article.id}
             onClick={() => onSelectArticle(article)}

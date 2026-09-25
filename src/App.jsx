@@ -14,11 +14,36 @@ import BlogPage from './components/BlogPage';
 import ProjectDetailModal from './components/ProjectDetailModal';
 import ArticleDetailModal from './components/ArticleDetailModal';
 import TechStack from './components/TechStack';
+import AdminDashboard from './components/AdminDashboard';
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState('home'); // 'home', 'work', 'blog'
+  const [currentPage, setCurrentPage] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname;
+      const hash = window.location.hash;
+      if (path === '/control-panel' || hash === '#control-panel' || path === '/admin' || hash === '#admin') {
+        return 'admin';
+      }
+    }
+    return 'home';
+  }); // 'home', 'work', 'blog', 'admin'
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedArticle, setSelectedArticle] = useState(null);
+
+  // Sync with browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname;
+      const hash = window.location.hash;
+      if (path === '/control-panel' || hash === '#control-panel' || path === '/admin' || hash === '#admin') {
+        setCurrentPage('admin');
+      } else {
+        setCurrentPage('home');
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const lenisRef = React.useRef(null);
 
@@ -65,8 +90,19 @@ export default function App() {
 
   const handleNavigate = (page) => {
     setCurrentPage(page);
+    if (page === 'admin') {
+      window.history.pushState(null, '', '/control-panel');
+    } else {
+      if (window.location.pathname === '/control-panel' || window.location.hash === '#control-panel' || window.location.hash === '#admin') {
+        window.history.pushState(null, '', '/');
+      }
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  if (currentPage === 'admin') {
+    return <AdminDashboard onBackToSite={() => handleNavigate('home')} />;
+  }
 
   return (
     <div className="min-h-screen bg-[#ECEAE5] text-[#111111] relative selection:bg-neutral-900 selection:text-white">

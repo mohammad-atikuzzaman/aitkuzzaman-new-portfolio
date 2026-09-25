@@ -33,17 +33,41 @@ const YoutubeIcon = ({ size = 18 }) => (
 export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', project: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email) return;
 
-    setSubmitted(true);
-    confetti({
-      particleCount: 80,
-      spread: 70,
-      origin: { y: 0.7 }
-    });
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Could not send message. Please try again.');
+      }
+
+      setSubmitted(true);
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.7 },
+      });
+    } catch (err) {
+      console.error('Contact form error:', err);
+      // If server is offline during development, gracefully allow fallback or display notice
+      setError(err.message || 'Something went wrong. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -104,6 +128,18 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Honeypot field: invisible to humans, attracts automated spam bots */}
+                <div className="hidden opacity-0 h-0 w-0 absolute pointer-events-none" aria-hidden="true">
+                  <input
+                    type="text"
+                    name="hp_website_trap"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={formData.hp_website_trap || ''}
+                    onChange={(e) => setFormData({ ...formData, hp_website_trap: e.target.value })}
+                  />
+                </div>
+
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">
                     Name
@@ -111,6 +147,7 @@ export default function Contact() {
                   <input
                     type="text"
                     required
+                    maxLength={100}
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="Enter your name"
@@ -145,11 +182,25 @@ export default function Contact() {
                   />
                 </div>
 
+                {error && (
+                  <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs sm:text-sm">
+                    {error}
+                  </div>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full py-4 rounded-full bg-white text-black font-bold text-base hover:bg-neutral-200 active:scale-[0.99] transition-all duration-200 shadow-md cursor-pointer"
+                  disabled={loading}
+                  className="w-full py-4 rounded-full bg-white text-black font-bold text-base hover:bg-neutral-200 active:scale-[0.99] transition-all duration-200 shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  Submit
+                  {loading ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+                      <span>Sending...</span>
+                    </>
+                  ) : (
+                    <span>Submit</span>
+                  )}
                 </button>
               </form>
             )}

@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function Testimonials() {
-  const testimonials = [
+  const defaultTestimonials = [
     {
       quote: "Templyo completely changed how I approach building sites in Framer. The templates are not just beautiful, they’re actually structured in a way that makes scaling so much easier.",
       name: "Yakoub Kashmiri",
@@ -27,6 +27,21 @@ export default function Testimonials() {
       avatar: "https://framerusercontent.com/images/MG7SSqT3AUbDDMeyGynYFWvAWI.png?width=160&height=160",
     },
   ];
+
+  const [testimonials, setTestimonials] = React.useState(defaultTestimonials);
+
+  React.useEffect(() => {
+    fetch('/api/testimonials')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.testimonials && data.testimonials.length > 0) {
+          setTestimonials(data.testimonials);
+        }
+      })
+      .catch((err) => {
+        console.warn('Using local fallback testimonials:', err.message);
+      });
+  }, []);
 
   return (
     <section className="py-24 px-6 max-w-7xl mx-auto">

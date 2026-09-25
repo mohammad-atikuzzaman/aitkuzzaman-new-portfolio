@@ -49,6 +49,26 @@ export const projectsData = [
 ];
 
 export default function FeaturedProjects({ onSelectProject, onNavigate }) {
+  const [projects, setProjects] = React.useState(projectsData);
+
+  React.useEffect(() => {
+    fetch('/api/projects')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.projects && data.projects.length > 0) {
+          // Normalize _id to id if needed
+          const normalized = data.projects.map((p) => ({
+            ...p,
+            id: p.id || p._id || p.slug,
+          }));
+          setProjects(normalized);
+        }
+      })
+      .catch((err) => {
+        console.warn('Using local fallback projects:', err.message);
+      });
+  }, []);
+
   return (
     <section id="projects" className="py-24 px-6 max-w-7xl mx-auto">
       {/* Header */}
@@ -72,7 +92,7 @@ export default function FeaturedProjects({ onSelectProject, onNavigate }) {
 
       {/* 2x2 Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-        {projectsData.map((project) => (
+        {projects.map((project) => (
           <div
             key={project.id}
             onClick={() => onSelectProject(project)}
