@@ -161,6 +161,9 @@ export default function AdminDashboard({ onBackToSite }) {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Reset input so re-selecting the same file fires onChange
+    e.target.value = '';
+
     setUploadingImage(true);
     const formData = new FormData();
     formData.append('image', file);
@@ -175,7 +178,7 @@ export default function AdminDashboard({ onBackToSite }) {
       if (!res.ok) throw new Error(data.error || 'Upload failed');
 
       setFieldValue(data.url);
-      showNotice('Image uploaded successfully!');
+      showNotice(data.warning || 'Image uploaded successfully!');
     } catch (err) {
       showNotice(err.message, true);
     } finally {
@@ -1006,15 +1009,18 @@ function EntityModal({ type, initialData, token, onClose, onSaved, uploadingImag
     setSubmitting(true);
     setError('');
 
+    const itemId = initialData?._id || initialData?.id;
+    const isEdit = Boolean(itemId);
+
     const endpointMap = {
-      project: initialData?._id ? `/api/projects/${initialData._id}` : '/api/projects',
-      thought: initialData?._id ? `/api/thoughts/${initialData._id}` : '/api/thoughts',
-      testimonial: initialData?._id ? `/api/testimonials/${initialData._id}` : '/api/testimonials',
+      project: isEdit ? `/api/projects/${itemId}` : '/api/projects',
+      thought: isEdit ? `/api/thoughts/${itemId}` : '/api/thoughts',
+      testimonial: isEdit ? `/api/testimonials/${itemId}` : '/api/testimonials',
     };
 
     try {
       const res = await fetch(endpointMap[type], {
-        method: initialData?._id ? 'PUT' : 'POST',
+        method: isEdit ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -1091,7 +1097,7 @@ function EntityModal({ type, initialData, token, onClose, onSaved, uploadingImag
                     type="text"
                     required
                     value={formData.image}
-                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, image: e.target.value, fullImage: e.target.value })}
                     placeholder="https://... or upload"
                     className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-black"
                   />
@@ -1102,10 +1108,16 @@ function EntityModal({ type, initialData, token, onClose, onSaved, uploadingImag
                       type="file"
                       accept="image/*"
                       className="hidden"
-                      onChange={(e) => onUploadImage(e, (url) => setFormData((prev) => ({ ...prev, image: url })))}
+                      onChange={(e) => onUploadImage(e, (url) => setFormData((prev) => ({ ...prev, image: url, fullImage: url })))}
                     />
                   </label>
                 </div>
+                {formData.image && (
+                  <div className="mt-2.5 flex items-center gap-3 p-2 bg-neutral-50 rounded-xl border border-neutral-200/80">
+                    <img src={formData.image} alt="Preview" className="w-16 h-11 rounded-lg object-cover bg-neutral-200 border border-black/5" />
+                    <span className="text-xs text-neutral-500 truncate max-w-xs">{formData.image.slice(0, 45)}...</span>
+                  </div>
+                )}
               </div>
 
               <div>

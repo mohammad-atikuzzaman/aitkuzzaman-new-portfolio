@@ -11,21 +11,32 @@ router.post('/', verifyAdmin, upload.single('image'), async (req, res) => {
     }
 
     // Check if Cloudinary is configured
-    if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY) {
-      const result = await uploadToCloudinary(req.file.buffer, 'portfolio');
-      return res.json({
-        success: true,
-        url: result.secure_url,
-        publicId: result.public_id,
-      });
+    if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
+      try {
+        const result = await uploadToCloudinary(req.file.buffer, 'portfolio');
+        return res.json({
+          success: true,
+          url: result.secure_url,
+          publicId: result.public_id,
+        });
+      } catch (cloudErr) {
+        console.warn('⚠️ Cloudinary upload failed (checking credentials/quota):', cloudErr.message);
+        // Graceful fallback to Data URI so upload NEVER fails for user
+        const base64Data = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+        return res.json({
+          success: true,
+          url: base64Data,
+          warning: 'Cloudinary configuration error. Image saved directly.',
+        });
+      }
     }
 
-    // Fallback: If Cloudinary not yet configured, return base64 Data URL for instant preview & testing
+    // Fallback: If Cloudinary not configured, return base64 Data URL for instant preview & testing
     const base64Data = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
     return res.json({
       success: true,
       url: base64Data,
-      note: 'Uploaded as data URI (Configure Cloudinary env variables for production cloud storage)',
+      note: 'Uploaded as data URI',
     });
   } catch (err) {
     console.error('Image upload error:', err);

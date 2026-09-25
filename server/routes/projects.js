@@ -108,7 +108,11 @@ router.post('/', verifyAdmin, async (req, res) => {
 // Admin: Update Project
 router.put('/:id', verifyAdmin, async (req, res) => {
   try {
-    const updated = await Project.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updateData = { ...req.body };
+    if (updateData.image) {
+      updateData.fullImage = updateData.fullImage || updateData.image;
+    }
+    const updated = await Project.findByIdAndUpdate(req.params.id, updateData, { returnDocument: 'after' });
     if (!updated) {
       return res.status(404).json({ success: false, error: 'Project not found' });
     }
