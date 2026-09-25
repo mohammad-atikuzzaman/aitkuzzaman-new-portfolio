@@ -19,6 +19,8 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedArticle, setSelectedArticle] = useState(null);
 
+  const lenisRef = React.useRef(null);
+
   // Initialize smooth scrolling for desktop, preserve native 120Hz touch scrolling for mobile
   useEffect(() => {
     const isTouch =
@@ -36,6 +38,7 @@ export default function App() {
       smoothWheel: true,
       wheelMultiplier: 1.1,
     });
+    lenisRef.current = lenis;
 
     function raf(time) {
       lenis.raf(time);
@@ -45,8 +48,19 @@ export default function App() {
 
     return () => {
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
+
+  // Pause desktop smooth scrolling when modal is open so the modal can scroll naturally
+  useEffect(() => {
+    if (!lenisRef.current) return;
+    if (selectedProject || selectedArticle) {
+      lenisRef.current.stop();
+    } else {
+      lenisRef.current.start();
+    }
+  }, [selectedProject, selectedArticle]);
 
   const handleNavigate = (page) => {
     setCurrentPage(page);

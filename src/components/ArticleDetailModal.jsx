@@ -19,8 +19,17 @@ export default function ArticleDetailModal({ article, onClose }) {
   if (!article) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-md animate-in fade-in duration-300">
-      <div className="relative w-full max-w-3xl max-h-[90vh] bg-[#ECEAE5] rounded-[32px] overflow-y-auto no-scrollbar shadow-2xl border border-black/10 text-[#111111] animate-in zoom-in-95 duration-300">
+    <div 
+      data-lenis-prevent
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-md animate-in fade-in duration-300"
+    >
+      <div 
+        data-lenis-prevent
+        className="relative w-full max-w-3xl max-h-[90vh] bg-[#ECEAE5] rounded-[32px] overflow-y-auto overscroll-contain no-scrollbar shadow-2xl border border-black/10 text-[#111111] animate-in zoom-in-95 duration-300"
+      >
         {/* Sticky Top Bar */}
         <div className="sticky top-0 z-20 flex items-center justify-between p-6 bg-[#ECEAE5]/90 backdrop-blur-sm border-b border-black/5">
           <button
