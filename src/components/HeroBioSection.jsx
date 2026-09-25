@@ -81,10 +81,10 @@ export default function HeroBioSection() {
         className="relative min-h-[92vh] md:min-h-screen flex flex-col justify-between items-center pt-20 sm:pt-24 pb-6 sm:pb-8 px-4 sm:px-6 max-w-7xl mx-auto overflow-visible touch-pan-y"
       >
         {/* Hero Headings with 3D Chrome Stars anchored directly to text */}
-        <div className="w-full flex-1 flex flex-col items-center justify-center my-auto relative z-10 -mt-8 sm:mt-0">
+        <div className="w-full flex-1 flex flex-col items-center justify-center my-auto relative z-10 -mt-35 sm:mt-0">
           <div className="relative flex flex-col items-center justify-center leading-[0.80] sm:leading-[0.82] tracking-tighter text-center">
             {/* Top-left Star (anchored to text with responsive positioning) */}
-            <div className="absolute -top-6 sm:-top-14 left-1 sm:-left-16 md:-left-20 z-20 hover:scale-110 transition-transform pointer-events-auto">
+            <div className="absolute -top-10 sm:-top-14 -left-10 sm:-left-16 md:-left-20 z-20 hover:scale-110 transition-transform pointer-events-auto">
               <ThreeStar size={1.05} className="w-16 h-16 sm:w-28 sm:h-28 md:w-36 md:h-36" />
             </div>
 
@@ -102,7 +102,7 @@ export default function HeroBioSection() {
             </h1>
 
             {/* Bottom-right Star (anchored to Developer text with responsive positioning) */}
-            <div className="absolute -bottom-5 sm:-bottom-12 right-1 sm:-right-16 md:-right-20 z-20 hover:scale-110 transition-transform pointer-events-auto">
+            <div className="absolute -bottom-10 sm:-bottom-12 -right-10 sm:-right-16 md:-right-20 z-20 hover:scale-110 transition-transform pointer-events-auto">
               <ThreeStar size={1.10} rotationSpeed={-0.01} className="w-18 h-18 sm:w-30 sm:h-30 md:w-38 md:h-38" />
             </div>
           </div>
@@ -121,7 +121,7 @@ export default function HeroBioSection() {
         {/* ================= THE ANIMATED 3D FLIPPING CARD ================= */}
         {/* Overlaps subtly on top of text on mobile and sits at bottom-center */}
         <div
-          className="absolute left-1/2 -translate-x-1/2 bottom-4 sm:bottom-8 md:bottom-10 z-30 pointer-events-none"
+          className="absolute left-1/2 -translate-x-1/2 bottom-16 sm:bottom-8 md:bottom-10 z-30 pointer-events-none"
           style={{ perspective: '1200px' }}
         >
           <div

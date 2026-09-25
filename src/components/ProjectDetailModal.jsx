@@ -3,6 +3,8 @@ import { X, ArrowUpRight, Calendar, Tag, ExternalLink } from 'lucide-react';
 
 export default function ProjectDetailModal({ project, onClose }) {
   useEffect(() => {
+    if (!project) return;
+
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose();
     };
@@ -10,9 +12,9 @@ export default function ProjectDetailModal({ project, onClose }) {
     document.body.style.overflow = 'hidden';
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
     };
-  }, [onClose]);
+  }, [project, onClose]);
 
   if (!project) return null;
 

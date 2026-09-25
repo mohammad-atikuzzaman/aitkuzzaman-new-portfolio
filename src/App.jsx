@@ -95,15 +95,19 @@ export default function App() {
       </main>
 
       {/* Interactive Modals */}
-      <ProjectDetailModal
-        project={selectedProject}
-        onClose={() => setSelectedProject(null)}
-      />
+      {selectedProject && (
+        <ProjectDetailModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+        />
+      )}
 
-      <ArticleDetailModal
-        article={selectedArticle}
-        onClose={() => setSelectedArticle(null)}
-      />
+      {selectedArticle && (
+        <ArticleDetailModal
+          article={selectedArticle}
+          onClose={() => setSelectedArticle(null)}
+        />
+      )}
     </div>
   );
 }
