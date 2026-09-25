@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import app from './app.js';
+import app from '../server/app.js';
 
 // Vercel Serverless Function entry point
 export default app;
