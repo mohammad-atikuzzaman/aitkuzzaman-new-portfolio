@@ -60,10 +60,10 @@ export default function Footer({ onNavigate }) {
           </span>
           <div>
             <a
-              href="mailto:Mejed@Templyo.io"
+              href="mailto:akash203037@gmail.com"
               className="text-lg sm:text-xl font-medium text-white hover:text-neutral-300 transition-colors underline underline-offset-4 decoration-neutral-700 hover:decoration-white"
             >
-              Mejed@Templyo.io
+              akash203037@gmail.com
             </a>
           </div>
         </div>
