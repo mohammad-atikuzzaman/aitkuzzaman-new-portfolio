@@ -6,24 +6,24 @@ export default function Services() {
 
   const services = [
     {
-      title: 'Website Migration',
-      tags: 'Web Migration • Optimization • Framer Rebuild',
-      desc: 'Seamlessly transition your existing website to modern frameworks with zero downtime and superior performance.'
+      title: 'Web Experiences',
+      tags: 'Websites • Landing Pages • E-commerce',
+      desc: 'Designing and engineering fast, responsive web experiences that look great, feel intuitive, and turn visitors into customers.',
     },
     {
-      title: 'Framer Templates',
-      tags: 'Startup • Agency • SaaS',
-      desc: 'Crafting top-tier Framer design systems and commercial templates engineered to drive conversions and scale.'
+      title: 'Full-Stack Engineering',
+      tags: 'React • Next.js • Node.js • MongoDB',
+      desc: 'Building robust full-stack applications with scalable architecture, secure authentication, custom APIs, dashboards, and reliable data systems.',
     },
     {
-      title: 'Frontend Development',
-      tags: 'UI Dev • Responsive Layouts • Web Performance',
-      desc: 'Pixel-perfect, high-performance web development utilizing modern React, Next.js, Tailwind, and fluid micro-animations.'
+      title: 'SaaS & AI Products',
+      tags: 'SaaS • AI • Automation • Real-time',
+      desc: 'Building production-ready digital products that combine thoughtful UX, powerful backend systems, AI capabilities, and business automation.',
     },
     {
-      title: 'Product Consulting',
-      tags: 'Product Direction • Web Strategy • Technical Guidance',
-      desc: 'Strategic technical roadmapping, UI/UX audit, and architecture consulting tailored for ambitious founders.'
+      title: 'Optimization & Growth',
+      tags: 'Performance • SEO • Security • Analytics',
+      desc: 'Turning existing websites into faster, more discoverable, and more reliable products through performance engineering, technical SEO, and security improvements.',
     },
   ];
 

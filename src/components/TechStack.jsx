@@ -239,9 +239,9 @@ export default function TechStack() {
 
             <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-white/10">
               <div className="flex items-center gap-2">
-                <span 
-                  className="w-2 h-2 rounded-full shadow-sm" 
-                  style={{ backgroundColor: tech.color, boxShadow: `0 0 10px ${tech.color}` }} 
+                <span
+                  className="w-2 h-2 rounded-full shadow-sm"
+                  style={{ backgroundColor: tech.color, boxShadow: `0 0 10px ${tech.color}` }}
                 />
                 <span className="text-xs font-bold text-white font-heading tracking-wide">
                   {tech.name}
@@ -271,7 +271,7 @@ export default function TechStack() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#111111] font-heading">
-              Engineered With Modern Stack
+              Developed With Modern Stack
             </h2>
           </div>
           <p className="text-neutral-600 text-sm sm:text-base max-w-md leading-relaxed">
