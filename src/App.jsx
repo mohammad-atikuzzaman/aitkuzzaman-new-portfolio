@@ -21,7 +21,7 @@ export default function App() {
     if (typeof window !== 'undefined') {
       const path = window.location.pathname;
       const hash = window.location.hash;
-      if (path === '/control-panel' || hash === '#control-panel' || path === '/admin' || hash === '#admin') {
+      if (path === '/control-panel' || hash === '#control-panel') {
         return 'admin';
       }
     }
@@ -35,7 +35,7 @@ export default function App() {
     const handlePopState = () => {
       const path = window.location.pathname;
       const hash = window.location.hash;
-      if (path === '/control-panel' || hash === '#control-panel' || path === '/admin' || hash === '#admin') {
+      if (path === '/control-panel' || hash === '#control-panel') {
         setCurrentPage('admin');
       } else {
         setCurrentPage('home');
@@ -93,7 +93,7 @@ export default function App() {
     if (page === 'admin') {
       window.history.pushState(null, '', '/control-panel');
     } else {
-      if (window.location.pathname === '/control-panel' || window.location.hash === '#control-panel' || window.location.hash === '#admin') {
+      if (window.location.pathname === '/control-panel' || window.location.hash === '#control-panel') {
         window.history.pushState(null, '', '/');
       }
     }

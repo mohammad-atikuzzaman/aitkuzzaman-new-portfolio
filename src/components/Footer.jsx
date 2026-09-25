@@ -7,11 +7,10 @@ export default function Footer({ onNavigate }) {
     { label: 'Services', href: '#services', page: 'home' },
     { label: 'Works', href: '#projects', page: 'work' },
     { label: 'Contact', href: '#contact', page: 'home' },
-    { label: 'Admin CMS', page: 'admin' },
   ];
 
   const handleLink = (link) => {
-    if ((link.page === 'work' || link.page === 'admin') && onNavigate) {
+    if (link.page === 'work' && onNavigate) {
       onNavigate(link.page);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
